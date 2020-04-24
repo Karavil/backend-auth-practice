@@ -1,0 +1,26 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource sqlite {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model dbmigrations {
+  batch          Int?
+  id             Int       @default(autoincrement()) @id
+  migration_time DateTime?
+  name           String?
+}
+
+model dbmigrations_lock {
+  index     Int  @default(autoincrement()) @id
+  is_locked Int?
+}
+
+model users {
+  id       Int    @default(autoincrement()) @id
+  password String
+  username String @unique
+}
