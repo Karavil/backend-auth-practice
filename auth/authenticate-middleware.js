@@ -10,7 +10,6 @@ module.exports = (req, res, next) => {
             message: "Unauthorized access. Please log in.",
          });
       }
-      console.log(decoded);
       req.user = decoded;
       next();
    });

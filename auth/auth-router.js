@@ -19,8 +19,11 @@ router.post("/register", async (req, res) => {
          },
       });
 
-      res.status(200).json({
-         message: `User with id ${newUser.id} created!`,
+      res.status(201).json({
+         message: `User created!`,
+         user: {
+            id: newUser.id,
+         },
       });
    } else {
       res.status(400).json({
@@ -47,7 +50,6 @@ router.post("/login", async (req, res) => {
       }
 
       if (bcrypt.compareSync(password, newUser.password) === true) {
-         console.log(process.env.TOKEN_SECRET);
          const token = jwt.sign({ username }, process.env.TOKEN_SECRET);
          return res.status(200).json({
             message: `Password approved, logging you in.`,
@@ -55,7 +57,7 @@ router.post("/login", async (req, res) => {
          });
       }
 
-      return res.status(400).json({ message: "Invalid password." });
+      return res.status(401).json({ message: "Invalid password." });
    }
 
    return res.status(400).json({
