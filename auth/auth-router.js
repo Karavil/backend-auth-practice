@@ -4,6 +4,7 @@ const { PrismaClient } = require("@prisma/client");
 const db = new PrismaClient();
 
 const bcrypt = require("bcryptjs");
+var jwt = require("jsonwebtoken");
 
 router.post("/register", async (req, res) => {
    const { username, password } = req.body;
@@ -46,8 +47,11 @@ router.post("/login", async (req, res) => {
       }
 
       if (bcrypt.compareSync(password, newUser.password) === true) {
+         console.log(process.env.TOKEN_SECRET);
+         const token = jwt.sign({ username }, process.env.TOKEN_SECRET);
          return res.status(200).json({
             message: `Password approved, logging you in.`,
+            token,
          });
       }
 
